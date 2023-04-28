@@ -55,8 +55,6 @@ def video_process(cap, frame_size, net, ln, encoder, tracker, movement_data_writ
 
 
         frame_count += 1
-
-        # Skip frames according to given rate
         if frame_count % DATA_RECORD_FRAME != 0:
             continue
 
@@ -70,12 +68,10 @@ def video_process(cap, frame_size, net, ln, encoder, tracker, movement_data_writ
         abnormal_individual = []
         ABNORMAL = False
 
-        
         for i, track in enumerate(humans_detected):
             [x, y, w, h] = list(map(int, track.to_tlbr().tolist()))
             [cx, cy] = list(map(int, track.positions[-1]))
             idx = track.track_id
-
 
             ke = kinetic_energy(track.positions[-1], track.positions[-2], TIME_STEP)
             if ke > ABNORMAL_ENERGY:

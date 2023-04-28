@@ -17,9 +17,7 @@ with open('processed_data/crowd_data.csv', 'r') as file:
 	next(reader)
 	for row in reader:
 		human_count.append(int(row[1]))
-		violate_count.append(int(row[2]))
-		restricted_entry.append(bool(int(row[3])))
-		abnormal_activity.append(bool(int(row[4])))
+		abnormal_activity.append(bool(int(row[2])))
 
 with open('processed_data/video_data.json', 'r') as file:
 	data = json.load(file)
@@ -42,18 +40,14 @@ for i in range(data_length):
 	time_axis.append(time)
 	next_time = time + datetime.timedelta(seconds= time_steps)
 	rect_width = mdates.date2num(next_time) - mdates.date2num(time)
-	if restricted_entry[i]:
-		ax.add_patch(patches.Rectangle((mdates.date2num(time), 0), rect_width, graph_height / 10, facecolor = 'red', fill=True))
 	if abnormal_activity[i]:
 		ax.add_patch(patches.Rectangle((mdates.date2num(time), 0), rect_width, graph_height / 20, facecolor = 'blue', fill=True))
 
 
-violate_line, = plt.plot(time_axis, violate_count, linewidth=3, label="Violation Count")
 crowd_line, =  plt.plot(time_axis, human_count, linewidth=3, label="Crowd Count")
 plt.title("Crowd Data versus Time")
 plt.xlabel("Time")
 plt.ylabel("Count")
-re_legend = patches.Patch(color= "red", label="Restriced Entry Detected")
 an_legend = patches.Patch(color= "blue", label="Abnormal Crowd Activity Detected")
-plt.legend(handles=[crowd_line, violate_line, re_legend, an_legend])
+plt.legend(handles=[crowd_line, an_legend])
 plt.show()	

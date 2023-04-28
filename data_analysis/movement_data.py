@@ -4,11 +4,11 @@ import cv2
 import json
 import math
 import numpy as np
-from config import VIDEO_CONFIG
+from utils.config import VIDEO_CONFIG
 from itertools import zip_longest
 from math import ceil
 from scipy.spatial.distance import euclidean
-from colors import RGB_COLORS, gradient_color_RGB
+from utils.colors import RGB_COLORS, gradient_color_RGB
 
 tracks = []
 with open('processed_data/movement_data.csv', 'r') as file:
@@ -45,8 +45,6 @@ color_end = 0
 color_steps = int((color_start - color_end) / blob_layer)
 scale = 1.5
 
-# print(stationary_distance)
-# print(stationary_threshold_frame)
 
 stationary_points = []
 movement_points = []
@@ -66,9 +64,6 @@ for movement in tracks:
             stationary_time = 0
     movement_points.append(temp_movement_point)
     total += len(temp_movement_point)
-
-# print(total)
-# print(movement_points)
 
 color1 = (255, 96, 0)
 color2 = (0, 28, 255)
@@ -114,7 +109,5 @@ heatmap_frame = cv2.addWeighted(heatmap, 0.75, heatmap_frame, 0.25, 1)
 cv2.imshow("Movement Tracks", tracks_frame)
 cv2.imshow("Stationary Location Heatmap", heatmap_frame)
 cv2.waitKey()
-cv2.destroyAllWindows()
 cap.release()
-
-    
+cv2.destroyAllWindows()
